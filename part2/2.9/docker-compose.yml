@@ -1,0 +1,28 @@
+version: '3.5'
+services:
+  backend:
+    ports:
+      - 8000:8000
+    build: ../../part1/1.11
+    environment:
+      - REDIS=redis
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=password
+      - DB_HOST=kh
+    depends_on:
+      - kh
+  frontend:
+    ports:
+      - 5000:5000
+    build: ../../part1/1.10
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+  kh:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./database:/var/lib/postgresql/data
